@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="/WEB-INF/templates/master.xhtml">
+
+            <ui:define name="top">
+                <h1>#{bundle.registration_title}</h1>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="CustomerCreateForm">
+                    <h:panelGroup id="display">
+                        <p:panelGrid columns="2" rendered="#{customerController.selected != null}">
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_firstname}" for="firstname" />
+                            <p:inputText id="firstname" value="#{customerController.selected.firstname}" title="#{bundle.CreateCustomerTitle_firstname}" required="true" requiredMessage="#{bundle.CreateCustomerRequiredMessage_firstname}"/>
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_lastname}" for="lastname" />
+                            <p:inputText id="lastname" value="#{customerController.selected.lastname}" title="#{bundle.CreateCustomerTitle_lastname}" required="true" requiredMessage="#{bundle.CreateCustomerRequiredMessage_lastname}"/>
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_email}" for="email" />
+                            <p:inputText id="email" value="#{customerController.selected.email}" title="#{bundle.CreateCustomerTitle_email}" required="true" requiredMessage="#{bundle.CreateCustomerRequiredMessage_email}"/>
+                            
+                            <p:outputLabel for="password" value="#{bundle.Password_Label}"/>
+                            <h:panelGroup>
+                                <p:password id="password" match="password2" feedback="true" 
+                                            label="#{bundle.Password_Label}" 
+                                            value="#{customerController.selected.password}"/>
+                                <p:message for="password"/>
+                            </h:panelGroup>
+                            <p:outputLabel for="password2" value="#{bundle.Retype_Password_Label}"/>
+                            <h:panelGroup>
+                                <p:password id="password2"  label="#{bundle.Retype_Password_Label}" />
+                                <p:message for="password2"/>
+                            </h:panelGroup>
+                            
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_addresses}" for="addresses" />
+                            <p:dataTable id="addresses" value="#{customerController.selected.addresses}"
+                                         var="address">
+                                <p:column headerText="#{bundle.zip}">
+                                    <h:outputText value="#{address.zipCode}"/>
+                                </p:column>
+                                <p:column headerText="#{bundle.city}">
+                                    <h:outputText value="#{address.city}"/>
+                                </p:column>
+                                <p:column headerText="#{bundle.address}">
+                                    <h:outputText value="#{address.street}"/>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton value="#{bundle.registration_newAddress}" 
+                                                     actionListener="#{customerController.prepareNewAddress}"
+                                                     update=":CustomerCreateForm:newAddress"
+                                                     process="@this"/>
+
+                                </f:facet>
+                            </p:dataTable>
+
+                        </p:panelGrid>
+                        <h:panelGroup id="newAddress">
+                            <p:panel header="#{bundle.registration_newAddress}" rendered="#{not empty customerController.newAddress}">
+                                <p:panelGrid columns="3" >
+                                    <p:outputLabel value="#{bundle.zip}" for="zipCode"/>
+                                    <p:outputLabel value="#{bundle.city}" for="city"/>
+                                    <p:outputLabel value="#{bundle.address}" for="street"/>
+                                    <p:inputText id="zipCode" value="#{customerController.newAddress.zipCode}"/>
+                                    <p:inputText id="city" value="#{customerController.newAddress.city}"/>
+                                    <p:inputText id="street" value="#{customerController.newAddress.street}"/>
+                                    <f:facet name="footer">
+                                        <div class="button-group">
+                                            <p:commandButton value="#{bundle.save_address}" actionListener="#{customerController.addAddress}"
+                                                             update="newAddress,addresses" process="newAddress"/>
+                                            <p:commandButton value="#{bundle.dismiss_address}" process="@this"
+
+                                                             actionListener="#{customerController.setNewAddress(null)}"
+                                                             update="newAddress"/>
+                                        </div>
+                                    </f:facet>
+                                </p:panelGrid>
+                            </p:panel>
+                        </h:panelGroup>
+                        <p:commandButton actionListener="#{customerController.create}" value="#{bundle.Save}" update="display,:growl" />
+                        <p:commandButton value="#{bundle.Cancel}" />
+                    </h:panelGroup>
+                </h:form>
+            </ui:define>
+            <ui:define name="bottom">
+            </ui:define>
+        </ui:composition>
+
+    </body>
+</html>

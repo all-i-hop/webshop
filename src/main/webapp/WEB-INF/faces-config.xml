@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <application>
+        <locale-config>
+            <default-locale>de</default-locale>
+            <supported-locale>de</supported-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        <message-bundle>locales/Bundle</message-bundle>
+        <resource-bundle>
+            <base-name>locales/Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+        <resource-bundle>
+            <base-name>locales/Bundle</base-name>
+            <var>bundle</var>
+        </resource-bundle>
+    </application>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>register</from-outcome>
+            <to-view-id>/pages/shop/register.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    
+</faces-config>

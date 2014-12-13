@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/WEB-INF/templates/master.xhtml">
+
+        <ui:define name="top">
+            <h1>#{bundle.createOrder_title}</h1>
+        </ui:define>
+
+        <ui:define name="content">
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{orderController.initCurrentUser()}"/>
+            </f:metadata>
+            <h:form style="margin-bottom: 30px">
+                <p:messages autoUpdate="true" />
+                <h:panelGrid columns="2" style="margin-top: 20px" cellpadding="5">
+                    <p:outputLabel for="customer_selection" value="#{bundle.createOrder_customer}"  />
+                    <p:selectOneMenu id="customer_selection" value="#{orderController.selected.customer}">
+                        <f:selectItem itemLabel="Select One" itemValue=""/>
+                        <f:selectItems value="#{customerController.items}" var="customer" 
+                                       itemLabel="#{customer.firstname}, #{customer.lastname}" itemValue="#{customer}"/>
+                        <p:ajax update="customer, delivery_selection" immediate="true"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+
+                <h:panelGroup id="customer">
+                    <p:panel header="Customer:  ">
+                        <p:panelGrid columns="2" id="customer_display" >
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_firstname}  " for="firstname"/>
+                            <h:outputText id="firstname" value="#{orderController.selected.customer.firstname}"/>
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_lastname}  " for="lastname"/>
+                            <h:outputText id="lastname" value="#{orderController.selected.customer.lastname}"/>
+                            <p:outputLabel value="#{bundle.CreateCustomerLabel_email}  " for="mail"/>
+                            <h:outputText id="mail" value="#{orderController.selected.customer.email}"/> 
+                        </p:panelGrid>
+                    </p:panel>      
+                </h:panelGroup>
+                <h:panelGrid columns="2" style="margin-top: 20px" cellpadding="5">
+                    <p:outputLabel for="delivery_selection" value="#{bundle.createOrder_delivery}"  />
+                    <p:selectOneMenu id="delivery_selection" value="#{orderController.selected.deliveryAddress}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItems value="#{orderController.selected.customer.addresses}" var="address" 
+                                       itemLabel="#{address.street}, #{address.city}" itemValue="#{address}"/>
+                        <p:ajax update="customer" immediate="true"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:panel>
+                    <p:dataTable var="orderDetail" value="#{orderController.selected.orderDetails}"
+                                 id="datalist" 
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 >
+                        <p:column headerText="#{bundle.createOrder_pos}">  
+                            <h:outputText escape="false" value="#{orderDetail.pos}" />
+                        </p:column>
+                        <p:column headerText="#{bundle.productName}">  
+                            <h:outputText escape="false" value="#{orderDetail.product.name}" />
+                        </p:column>
+                        <p:column headerText="#{bundle.quantity}">  
+                            <h:outputText value="#{orderDetail.quantity}" /> 
+                        </p:column>
+                        <p:column headerText="#{bundle.productPrice}">  
+                            <h:outputText value="#{orderDetail.unitprice}" /> 
+                        </p:column>
+                        <p:column headerText="#{bundle.createOrder_priceTotal}">  
+                            <h:outputText value="#{orderDetail.priceTotal}" /> 
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <h:panelGroup>
+                    <p:commandButton actionListener="#{orderController.create()}"  value="#{bundle.Save}" />
+                    <p:commandButton value="#{bundle.Cancel}" actionListener="#{orderController.destroy()}" />
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+
+
+
+</html>
+

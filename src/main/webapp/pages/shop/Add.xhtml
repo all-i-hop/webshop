@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+     <ui:composition>
+
+        <p:dialog id="ProductAddDialog" widgetVar="ProductAddDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.AddProductTitle}">
+            <h:form id="ProductAddForm">
+                <h:panelGroup id="display_addProduct">
+                    <p:panelGrid columns="2" rendered="#{productsController.selected != null}">
+                        <h:outputText value="#{bundle.ViewProductsLabel_id}"/>
+                        <h:outputText value="#{productsController.selected.id}"
+                                      title="#{bundle.ViewProductsTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewProductsLabel_name}"/>
+                        <h:outputText value="#{productsController.selected.name}"
+                                      title="#{bundle.ViewProductsTitle_name}"/>
+                        <h:outputText value="#{bundle.ViewProductsLabel_shortdescription}"/>
+                        <h:outputText value="#{productsController.selected.shortdescription}"
+                                      title="#{bundle.ViewProductsTitle_shortdescription}"/>
+                        <h:outputText value="#{bundle.ViewProductsLabel_description}"/>
+                        <h:outputText value="#{productsController.selected.description}"
+                                      title="#{bundle.ViewProductsTitle_description}"
+                                      escape="false"/>
+                        <h:outputText value="#{bundle.ViewProductsLabel_price}"/>
+                        <h:outputText value="#{productsController.selected.price}"
+                                      title="#{bundle.ViewProductsTitle_price}">
+                                      <f:convertNumber pattern="#,##0.00"/>
+                        </h:outputText>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="ProductAddDialog.hide()"/>
+                    <p:commandButton value="#{bundle.Add}" action="#{cartController.add(productsController.selected)}" onclick="ProductAddDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>
+

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="/WEB-INF/templates/productSelection.xhtml">
+
+            <ui:define name="title">
+                #{productController.selected.name}
+            </ui:define>
+
+            <ui:define name="main">
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{productController.loadProduct(param.id)}"/>
+                </f:metadata>
+                <h:form id="DisplayDetails">
+                    <h1>#{productController.selected.name}</h1>
+                    <p>
+                        #{productController.selected.shortdescription}                   
+                    </p>
+                    
+                    <blockquote>
+                        <legend>#{bundle.CreateProductLabel_description}</legend>
+                        <h:outputText escape="false" value="#{productController.selected.description}"/>
+                    </blockquote>
+                    <br/>
+                    <p>#{bundle.CreateProductLabel_price} <h:outputText value="#{productController.selected.price}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </h:outputText>
+                    </p>
+                    
+                    <div class="btn-group">
+                        <p:commandLink styleClass="btn btn-primary" actionListener="#{cartController.add}"
+                                       update=":cartForm" value="#{bundle.ToShoppingCart}"/>
+
+                        <p:commandLink styleClass="btn btn-default" action="home" value="Back"/>
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

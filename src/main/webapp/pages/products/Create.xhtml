@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ProductsCreateDlg" widgetVar="ProductsCreateDialog" modal="true" resizable="true"
+                  appendTo="@(body)" header="#{bundle.CreateProductsTitle}" height="600"
+                  style="height: 600px;">
+            <h:form id="ProductsCreateForm" enctype="multipart/form-data">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{productsController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateProductsLabel_name}" for="name" />
+                        <p:inputText id="name" value="#{productsController.selected.name}"
+                                     title="#{bundle.CreateProductsTitle_name}" required="true"
+                                     requiredMessage="#{bundle.CreateProductsRequiredMessage_name}"/>
+                        <p:outputLabel value="#{bundle.CreateProductsLabel_shortdescription}" for="shortdescription" />
+                        <p:inputTextarea cols="80" rows="2" autoResize="true" maxlength="200"
+                                         id="shortdescription" value="#{productsController.selected.shortdescription}"
+                                         title="#{bundle.CreateProductsTitle_shortdescription}" />
+                        <p:outputLabel value="#{bundle.CreateProductsLabel_description}" for="description" />
+                        <p:editor height="250" width="600" id="description" value="#{productsController.selected.description}" 
+                                  required="true" requiredMessage="#{bundle.CreateProductsRequiredMessage_description}"/>
+                        <p:outputLabel value="#{bundle.CreateProductsLabel_price}" for="price" />
+                        <p:inputText id="price" value="#{productsController.selected.price}" title="#{bundle.CreateProductsTitle_price}" />
+                    </p:panelGrid>
+
+                </h:panelGroup>
+                <h:panelGroup id="imagePreview">
+                    <p:carousel value="#{productsController.selected.images}" var="image"
+                                itemStyle="height: 80px; width: 100px;"
+                                headerText="Product Images"
+                                rendered="#{not empty productsController.selected.images}">
+                        <p:graphicImage value="/showThumbnail?name=#{image.name}"
+                                        title="#{image.name}"
+                                        alt="#{image.name}"/>
+                    </p:carousel>
+                </h:panelGroup>
+
+                <p:fileUpload id="fileUpload" fileUploadListener="#{productsController.handleFileUpload}"
+                              multiple="true" update=":growl, imagePreview" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+
+                <p:commandButton actionListener="#{productsController.create()}" value="#{bundle.Save}"
+                                 update="display,:ProductsListForm:datalist,:growl"
+                                 oncomplete="handleSubmit(args,'ProductsCreateDialog');"
+                                 process="display, @this"/>
+                <p:commandButton value="#{bundle.Cancel}" onclick="ProductsCreateDialog.hide()"
+                                 immediate="true"/>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

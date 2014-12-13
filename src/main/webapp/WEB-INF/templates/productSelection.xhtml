@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:lu="http://xmlns.jcp.org/jsf/composite/components/languageUtils"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view locale="#{languageSelectorBean.locale}">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <title><ui:insert name="title">#{bundle.AppName}</ui:insert></title>
+            <link rel="stylesheet" href="#{request.contextPath}/js/libs/twitter-bootstrap/css/bootstrap.css"></link>
+            <link rel="stylesheet" href="#{request.contextPath}/js/libs/twitter-bootstrap/css/bootstrap-theme.css"></link>
+            <link rel="stylesheet" href="#{request.contextPath}/images/background.css"></link>
+            <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        </h:head>
+        <h:body>
+            <div class="container">
+                <div id="top">
+                    <div class="jumbotron">   
+                        <ui:insert name="top">
+                        </ui:insert>
+                        <div id="header">
+                            <ui:insert name="header">
+                                <lu:selector locales="de,en"/>
+                            </ui:insert>
+                        </div>
+                    </div>
+                    <h:form id="menuForm">
+                        <p:menubar>
+                            <p:menuitem value="#{bundle.Home}" outcome="/pages/shop/UserList.xhtml" icon="ui-icon-home"/>
+                            <p:submenu label="#{bundle.Maintenance}" rendered="#{request.isUserInRole('ADMINISTRATOR') }">
+                                <p:menuitem value="#{bundle.navbar_products}" outcome="/pages/products/List.xhtml" />
+                                <p:menuitem value="#{bundle.menubar_customer}" outcome="/pages/customer/List.xhtml" />
+                                <p:menuitem value="#{bundle.menubar_order}" outcome="/pages/order/List.xhtml" />
+                            </p:submenu>
+                            <p:menuitem value="#{bundle.register_menu}" action="#{customerController.prepareRegistration()}" rendered="#{empty request.remoteUser}" />
+                            <f:facet name="options">
+                                <div>
+                                    <h:panelGroup rendered="#{not empty request.remoteUser}">
+                                        <h:outputFormat value="#{bundle.Logged_In_As}">
+                                            <f:param value="#{request.remoteUser}"/>
+                                        </h:outputFormat>
+                                        <p:commandButton value="Logout" actionListener="#{request.logout()}" ajax="false" />
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{empty request.remoteUser}">
+                                        <p:inputText id="theUsername" value="#{username}" placeholder="Email" size="20"/>
+                                        <p:password id="thePassword" value="#{password}" placeholder="Password" size="12"/>
+                                        <p:commandButton value="Login" actionListener="#{request.login(username, password)}"
+                                                         ajax="false" />
+                                    </h:panelGroup>
+                                </div>    
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
+                </div>
+                <div id="content" class="center_content">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <ui:insert name="left">Content</ui:insert>
+                        </div>
+                        <div class="col-md-4" >
+                            <ui:insert name="right">Content</ui:insert>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bottom" class="bottom center_content">
+                    <ui:insert name="bottom">&copy; FH JOANNEUM</ui:insert>
+                </div>
+            </div>
+        </h:body>
+    </f:view>
+</html>

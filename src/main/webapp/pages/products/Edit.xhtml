@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ProductsEditDlg" widgetVar="ProductsEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditProductsTitle}">
+            <h:form id="ProductsEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{productsController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditProductsLabel_id}"
+                                       for="id" />
+                        <p:inputText id="id"
+                                     value="#{productsController.selected.id}"
+                                     title="#{bundle.EditProductsTitle_id}" />
+                        <p:outputLabel value="#{bundle.EditProductsLabel_name}"
+                                       for="name" />
+                        <p:inputText id="name"
+                                     value="#{productsController.selected.name}"
+                                     title="#{bundle.EditProductsTitle_name}"
+                                     required="true"
+                                     requiredMessage="#{bundle.EditProductsRequiredMessage_name}"/>
+                        <p:outputLabel value="#{bundle.EditProductsLabel_shortdescription}"
+                                       for="shortdescription" />
+                        <p:inputText id="shortdescription"
+                                     value="#{productsController.selected.shortdescription}"
+                                     title="#{bundle.EditProductsTitle_shortdescription}" />
+                        <p:outputLabel value="#{bundle.EditProductsLabel_description}"
+                                       for="description" />
+                        <p:editor width="600"
+                                         id="description"
+                                         value="#{productsController.selected.description}"
+                                         required="true"
+                                         requiredMessage="#{bundle.EditProductsRequiredMessage_description}"/>
+                        <p:outputLabel value="#{bundle.EditProductsLabel_price}"
+                                       for="price" />
+                        <p:inputText id="price"
+                                     value="#{productsController.selected.price}" 
+                                     title="#{bundle.EditProductsTitle_price}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{productsController.update}" value="#{bundle.Save}" update="display,:ProductsListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ProductsEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ProductsEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

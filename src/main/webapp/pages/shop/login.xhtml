@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <body>
+        <ui:composition template="/WEB-INF/templates/master.xhtml">
+
+            <ui:define name="top">
+                <h1>#{bundle.login_title}</h1>
+            </ui:define>
+            <ui:define name="content">
+                <h:form id="login">
+                    <input type="text" name="j_username" placeholder="Email"/><br/><br/>
+                    <input type="password" name="j_password" placeholder="Password"/><br/><br/>
+                    <p:commandButton value="#{bundle.login_button}"
+                                     actionListener="index.xhtml" 
+                                     onclick="document.#{p:component('login')}.action = 'j_security_check';" ajax="false"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>#
+    </body>
+</html>
+
